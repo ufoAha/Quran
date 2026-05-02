@@ -55,8 +55,8 @@ function loadSurah(surahName) {
 }
 
 function hideNavigation(surahName) {
-    main.style.height = '94vh';
-    navigation.style.height = '6vh';
+    main.style.height = '93vh';
+    navigation.style.height = '7vh';
     let navigate = document.createElement('button');
     navigate.innerText = '☰';
     navigate.addEventListener('click', function() {
@@ -109,3 +109,16 @@ surah.addEventListener('scroll', (event) => {
     let currentSurah = localStorage.getItem("currentSurah");
     localStorage.setItem(`${currentSurah}-Scroll`, surah.scrollTop);
 });
+
+function getOrientationMode() {
+  if (window.matchMedia("(orientation: portrait)").matches) return "portrait";
+  if (window.matchMedia("(orientation: landscape)").matches) return "landscape";
+  return window.innerHeight >= window.innerWidth ? "portrait" : "landscape";
+}
+
+window.addEventListener("orientationchange", setTimeout(() => {
+  if (getOrientationMode() == "landscape") {
+    navigation.style.display = "none";
+    main.style.height = "100vh";
+  }
+}, 150));

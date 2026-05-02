@@ -1,4 +1,4 @@
-package truth.quran.mine;
+package truth.quran;
 
 import android.app.Activity;
 import android.os.Bundle;

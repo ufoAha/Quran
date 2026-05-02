@@ -1,9 +1,10 @@
 res/drawable/*flat
 res/values/*flat
 src/*.class
-src/*/*/*/*.class
-src/*/*/*/R.java
+src/*/*/*.class
+src/*/*/R.java
 *.jks
 *.apk
 *.idsig
 *.dex
+bundle/
