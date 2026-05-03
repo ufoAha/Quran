@@ -1,9 +1,10 @@
 res/drawable/*flat
 res/values/*flat
+res/mi*/*.flat
 src/*.class
-src/*/*/*.class
-src/*/*/R.java
+src/truth/
 *.jks
+*.p12
 *.apk
 *.idsig
 *.dex
