@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 path=~/Projects/Quran
-version_code=8;version_name=8
+version_code=10;version_name=10
 key_alias=uploadkey; keystore=my_keystore.p12 pass=1234312343
 shopt -s extglob
 
