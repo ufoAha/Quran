@@ -61,7 +61,7 @@ p {
     margin: 5px; /* This creates the gap effect */
 }
 
-button {
+button, .button {
     font-size: 14px;
     padding: 6px 10px 6px 10px;
     border: none;
@@ -72,7 +72,7 @@ button {
     transition: -webkit-transform 0.1s ease; /* Added for older WebKit */
 }
 
-button:active {
+button:active, .button {
     transform: scale(0.95);
     -webkit-transform: scale(0.95); /* Added for older WebKit */
 }
@@ -87,4 +87,18 @@ button.current-surah {
     border: none;
     border-radius: 20px;
     background-color: rgb(114, 186, 114);
+}
+
+#input {
+    width: 100px;
+    border: none;
+    background-color: rgb(236, 255, 236);
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+#input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgb(114, 186, 114);
 }

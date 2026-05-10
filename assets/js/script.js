@@ -1,5 +1,7 @@
 "use strict";
 
+import { searchSurahs } from "./fuzzy_search.js";
+
 const SURAHS = [
     "Al-Fatiha", "Al-Baqarah", "Aal-E-Imran", "An-Nisa", "Al-Ma'idah",
     "Al-An'am", "Al-A'raf", "Al-Anfal", "At-Tawbah", "Yunus", "Hud",
@@ -25,6 +27,9 @@ const SURAHS = [
     "Quraysh", "Al-Ma'un", "Al-Kawthar", "Al-Kafirun", "An-Nasr",
     "Al-Masad", "Al-Ikhlas", "Al-Falaq", "An-Nas"
 ];
+
+const closed_state_height1 = "92.5vh";
+const closed_state_height2 = "7.5vh";
 
 const surah = document.getElementById('surah-content');
 const navigation = document.getElementById('navigation');
@@ -62,8 +67,8 @@ function loadSurah(surahName) {
 }
 
 function hideNavigation(surahName) {
-    main.style.height = '93vh';
-    navigation.style.height = '7vh';
+    main.style.height = closed_state_height1;
+    navigation.style.height = closed_state_height2;
     
     // Clear navigation using compatible method
     clearElement(navigation);
@@ -85,18 +90,25 @@ function showNavigation() {
     // Clear navigation using compatible method
     clearElement(navigation);
     
-    main.style.height = '70vh';
+    main.style.height = '68vh';
     navigation.style.height = '30vh';
     
     const closeButton = document.createElement('button');
     closeButton.innerText = "✕";
+    closeButton.className = "button";
     closeButton.addEventListener('click', function () {
         if (localStorage.getItem("currentSurah")) {
             hideNavigation(localStorage.getItem("currentSurah"));
         }
     });
     navigation.appendChild(closeButton);
+
+    const box = document.createElement("input");
+    box.id = "input";
+    box.type = "text";
+    box.placeholder = "Search";
     
+    navigation.appendChild(box);
     SURAHS.forEach(function(name) {
         const button = document.createElement('button');
         button.innerText = name;
@@ -145,10 +157,10 @@ window.addEventListener("orientationchange", function() {
         } else {
             navigation.style.display = "block";
             if (localStorage.getItem("currentSurah")) {
-                main.style.height = '93vh';
-                navigation.style.height = '7vh';
+                main.style.height = closed_state_height1;
+                navigation.style.height = closed_state_height2;
             } else {
-                main.style.height = '70vh';
+                main.style.height = '68vh';
                 navigation.style.height = '30vh';
             }
         }
