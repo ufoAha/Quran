@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     user-select: none;
+    -webkit-user-select: none; /* Added for older WebKit */
     touch-action: pan-x pan-y;
     box-sizing: border-box;
 }
@@ -16,8 +17,11 @@
 #main {
     height: 70vh;
     display: flex;
+    display: -webkit-flex; /* Added for older WebKit */
     align-items: center;
+    -webkit-align-items: center; /* Added for older WebKit */
     justify-content: center;
+    -webkit-justify-content: center; /* Added for older WebKit */
 }
 
 p {
@@ -32,22 +36,29 @@ p {
     font-style: normal;
 }
 
-
-
 #navigation {
     height: 30vh;
     background-color: rgb(204, 248, 204);
     border: none;
     border-radius: 20px;
     display: flex;
+    display: -webkit-flex; /* Added for older WebKit */
     align-items: center;
+    -webkit-align-items: center;
     justify-content: center;
-    gap: 10px;
+    -webkit-justify-content: center;
+    /* gap: 10px; */ /* Removed - not well supported in older WebView */
     margin-left: 2vh;
     margin-right: 2vh;
     flex-wrap: wrap;
+    -webkit-flex-wrap: wrap; /* Added for older WebKit */
     overflow-y: auto;
     padding: 10px;
+}
+
+/* Alternative to gap - adds spacing to all buttons */
+#navigation button {
+    margin: 5px; /* This creates the gap effect */
 }
 
 button {
@@ -55,22 +66,25 @@ button {
     padding: 6px 10px 6px 10px;
     border: none;
     border-radius: 20px;
-    background-color:rgb(114, 186, 114);
+    background-color: rgb(114, 186, 114);
     transition: transform 0.1s ease;
+    -webkit-transition: -webkit-transform 0.1s ease; /* Added for older WebKit */
+    transition: -webkit-transform 0.1s ease; /* Added for older WebKit */
 }
 
 button:active {
-    transform: scale(0.95)
+    transform: scale(0.95);
+    -webkit-transform: scale(0.95); /* Added for older WebKit */
 }
 
 button.current-surah {
-    color: inherit;          /* keeps your original color */
+    color: inherit;
     background: inherit;
-    pointer-events: none;    /* non-clickable */
-    opacity: 1;            /* prevents grey fade */
+    pointer-events: none;
+    opacity: 1;
     font-size: 14px;
     padding: 6px 10px 6px 10px;
     border: none;
     border-radius: 20px;
-    background-color:rgb(114, 186, 114);
+    background-color: rgb(114, 186, 114);
 }

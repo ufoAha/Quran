@@ -30,6 +30,13 @@ const surah = document.getElementById('surah-content');
 const navigation = document.getElementById('navigation');
 const main = document.getElementById('main');
 
+// Helper function to clear element (compatible with older browsers)
+function clearElement(element) {
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
+    }
+}
+
 function loadSurah(surahName) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `file:///android_asset/surahs/${surahName}`, true);
@@ -57,68 +64,103 @@ function loadSurah(surahName) {
 function hideNavigation(surahName) {
     main.style.height = '93vh';
     navigation.style.height = '7vh';
+    
+    // Clear navigation using compatible method
+    clearElement(navigation);
+    
     let navigate = document.createElement('button');
     navigate.innerText = '☰';
     navigate.addEventListener('click', function() {
         showNavigation();
     });
-    navigation.replaceChildren(navigate);
+    navigation.appendChild(navigate);
+    
     let visible = document.createElement('button');
     visible.innerText = surahName;
-    navigation.appendChild(visible);
     visible.className = "current-surah";
+    navigation.appendChild(visible);
 }
 
 function showNavigation() {
-    navigation.replaceChildren();
+    // Clear navigation using compatible method
+    clearElement(navigation);
+    
     main.style.height = '70vh';
     navigation.style.height = '30vh';
+    
     const closeButton = document.createElement('button');
-    closeButton.innerText = "✕"
+    closeButton.innerText = "✕";
     closeButton.addEventListener('click', function () {
         if (localStorage.getItem("currentSurah")) {
             hideNavigation(localStorage.getItem("currentSurah"));
         }
     });
-    navigation.append(closeButton);
+    navigation.appendChild(closeButton);
+    
     SURAHS.forEach(function(name) {
-    const button = document.createElement('button');
-    button.innerText = name;
-    button.addEventListener('click', function() {
-        loadSurah(name);
-        hideNavigation(name);
-    });
-    navigation.appendChild(button);
+        const button = document.createElement('button');
+        button.innerText = name;
+        button.addEventListener('click', function() {
+            loadSurah(name);
+            hideNavigation(name);
+        });
+        navigation.appendChild(button);
     });
 }
 
+// Initialize the app
 let currentSurah = localStorage.getItem("currentSurah");
 let scrollPosition = localStorage.getItem(`${currentSurah}-Scroll`);
+
 if (currentSurah) {
     hideNavigation(currentSurah);
     loadSurah(currentSurah);
     let func = () => surah.scrollTop = Number(scrollPosition);
     setTimeout(func, 200);
-
-}
-else {
+} else {
     showNavigation();
 }
 
-surah.addEventListener('scroll', (event) => {
+// Save scroll position
+surah.addEventListener('scroll', function(event) {
     let currentSurah = localStorage.getItem("currentSurah");
-    localStorage.setItem(`${currentSurah}-Scroll`, surah.scrollTop);
+    if (currentSurah) {
+        localStorage.setItem(`${currentSurah}-Scroll`, surah.scrollTop);
+    }
 });
 
+// Handle orientation changes
 function getOrientationMode() {
-  if (window.matchMedia("(orientation: portrait)").matches) return "portrait";
-  if (window.matchMedia("(orientation: landscape)").matches) return "landscape";
-  return window.innerHeight >= window.innerWidth ? "portrait" : "landscape";
+    if (window.matchMedia("(orientation: portrait)").matches) return "portrait";
+    if (window.matchMedia("(orientation: landscape)").matches) return "landscape";
+    return window.innerHeight >= window.innerWidth ? "portrait" : "landscape";
 }
 
-window.addEventListener("orientationchange", setTimeout(() => {
-  if (getOrientationMode() == "landscape") {
-    navigation.style.display = "none";
-    main.style.height = "100vh";
-  }
-}, 150));
+// Orientation change handler with better compatibility
+window.addEventListener("orientationchange", function() {
+    setTimeout(function() {
+        if (getOrientationMode() === "landscape") {
+            navigation.style.display = "none";
+            main.style.height = "100vh";
+        } else {
+            navigation.style.display = "block";
+            if (localStorage.getItem("currentSurah")) {
+                main.style.height = '93vh';
+                navigation.style.height = '7vh';
+            } else {
+                main.style.height = '70vh';
+                navigation.style.height = '30vh';
+            }
+        }
+    }, 150);
+});
+
+// Also handle resize for devices that don't fire orientationchange
+window.addEventListener("resize", function() {
+    setTimeout(function() {
+        if (getOrientationMode() === "landscape") {
+            navigation.style.display = "none";
+            main.style.height = "100vh";
+        }
+    }, 150);
+});
