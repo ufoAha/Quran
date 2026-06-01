@@ -28,7 +28,7 @@ function make_assets () {
     cp assets/index.html compiled/assets
 
     mkdir compiled/assets/js
-    uglifyjs assets/js/fuzzy_search.js -o compiled/assets/js/fuzzy_search.js
+    # uglifyjs assets/js/fuzzy_search.js -o compiled/assets/js/fuzzy_search.js
     uglifyjs assets/js/script.js -o compiled/assets/js/script.js
     
 }
@@ -58,7 +58,7 @@ else
     make_assets
     aapt2 link -o unsigned.apk -I ~/android_sdk/platforms/android-36/android.jar \
     res/drawable/*flat res/values/*flat res/m*/*flat --manifest AndroidManifest.xml --java src/ -A compiled/assets \
-    --version-code $version_code --version-name
+    --version-code $version_code --version-name $version_name
 fi
 
 dexer
